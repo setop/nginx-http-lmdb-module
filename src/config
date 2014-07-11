@@ -1,0 +1,22 @@
+ngx_feature="lmdb"
+ngx_feature_name=
+ngx_feature_run=no
+ngx_feature_incs="#include <lmdb.h>"
+ngx_feature_path="/usr/include/lmdb"
+ngx_feature_libs=-llmdb
+ngx_feature_test="lmdb_version()"
+. auto/feature
+
+#if [ $ngx_found = yes ]; then
+if true; then
+    ngx_addon_name=ngx_http_lmdb_module
+    HTTP_MODULES="$HTTP_MODULES ngx_http_lmdb_module"
+    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_lmdb_module.c"
+    CORE_LIBS="$CORE_LIBS -llmdb"
+    CFLAGS="$CFLAGS -DDEBUG -I/home/mrloyal/mysyncdata/bidouille/nginx-lmdb-module/liblmdb"
+else
+    cat << END
+$0: error: the lmdb module requires the lmdb library.
+END
+    exit 1
+fi
